@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{25769160-F252-44D2-BCAE-850C3F1347E1}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Componente\Componente.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="DesafioTecnico.dproj">
+            <Dependencies>Componente\Componente.dproj</Dependencies>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="Componente">
+        <MSBuild Projects="Componente\Componente.dproj"/>
+    </Target>
+    <Target Name="Componente:Clean">
+        <MSBuild Projects="Componente\Componente.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Componente:Make">
+        <MSBuild Projects="Componente\Componente.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="DesafioTecnico" DependsOnTargets="Componente">
+        <MSBuild Projects="DesafioTecnico.dproj"/>
+    </Target>
+    <Target Name="DesafioTecnico:Clean" DependsOnTargets="Componente:Clean">
+        <MSBuild Projects="DesafioTecnico.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="DesafioTecnico:Make" DependsOnTargets="Componente:Make">
+        <MSBuild Projects="DesafioTecnico.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="Componente;DesafioTecnico"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="Componente:Clean;DesafioTecnico:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="Componente:Make;DesafioTecnico:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
